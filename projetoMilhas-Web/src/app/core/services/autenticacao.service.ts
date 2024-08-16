@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
 
 interface AuthResponse {
-  acess_token: string;
+  access_token: string;  // Corrigido para 'access_token'
 }
 
 @Injectable({
@@ -28,8 +28,17 @@ export class AutenticacaoService {
       )
       .pipe(
         tap((response) => {
-          const authtoken = response.body?.acess_token || '';
-          this.userService.salvarToken(authtoken);
+          const authToken = response.body?.access_token || '';
+
+          if (authToken) {
+            if (authToken.split('.').length === 3) {
+              this.userService.salvarToken(authToken);
+            } else {
+              console.error('Token inválido recebido:', authToken);
+            }
+          } else {
+            console.error('Nenhum token recebido na resposta:', response);
+          }
         })
       );
   }
