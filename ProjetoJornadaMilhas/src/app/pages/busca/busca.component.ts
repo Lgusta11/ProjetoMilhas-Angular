@@ -15,8 +15,8 @@ export class BuscaComponent implements OnInit {
     private formBuscaService: FormBuscaService
   ) { }
   ngOnInit(): void {
-    const buscaPadrao = {
-      data: new Date().toISOString,
+    const buscaPadrao : DadosBusca= {
+      dataIda: new Date().toISOString(),
       pagina: 1,
       porPagina: 25,
       somenteIda: false,

@@ -12,7 +12,7 @@ export class FormBuscaService {
 
   formBusca: FormGroup;
 
-  constructor(private dialog: MatDialog) { 
+  constructor(private dialog: MatDialog) {
     const somenteIda = new FormControl(false, [Validators.required])
     const dataVolta = new FormControl(null, [Validators.required])
 
@@ -20,13 +20,16 @@ export class FormBuscaService {
       somenteIda,
       origem: new FormControl(null, [Validators.required]),
       destino: new FormControl(null, [Validators.required]),
-      tipo: new FormControl("Executiva"),
-      adultos: new FormControl(3),
+      tipo: new FormControl("Econômica"),
+      adultos: new FormControl(1),
       criancas: new FormControl(0),
-      bebes: new FormControl(1),
+      bebes: new FormControl(0),
       dataIda: new FormControl(null, [Validators.required]),
       dataVolta,
-      conexoes: new FormControl(null)
+      conexoes: new FormControl(null),
+      companhias: new FormControl(null),
+      precoMin: new FormControl(null),
+      precoMax: new FormControl(null),
     })
     somenteIda.valueChanges.subscribe(somenteIda => {
       if(somenteIda){
@@ -47,24 +50,24 @@ export class FormBuscaService {
     if (adultos && adultos > 0) {
       descricao += `${adultos} adulto${adultos > 1 ? 's' : ''}`;
     }
-  
+
     const criancas = this.formBusca.get('criancas')?.value;
     if (criancas && criancas > 0) {
       descricao += `${descricao ? ', ' : ''}${criancas} criança${criancas > 1 ? 's' : ''}`;
     }
-  
+
     const bebes = this.formBusca.get('bebes')?.value;
     if (bebes && bebes > 0) {
       descricao += `${descricao ? ', ' : ''}${bebes} bebê${bebes > 1 ? 's' : ''}`;
     }
-  
+
     return descricao
   }
 
   trocarOrigemDestino(): void {
     const origem = this.formBusca.get('origem')?.value;
     const destino = this.formBusca.get('destino')?.value;
-  
+
     this.formBusca.patchValue({
       origem: destino,
       destino: origem
@@ -97,10 +100,21 @@ export class FormBuscaService {
     if (dataVoltaControl.value) {
       dadosBusca.dataVolta = dataVoltaControl.value.toISOString();
     }
-
     const conexoesControl = this.obterControle<number>('conexoes');
     if(conexoesControl.value){
       dadosBusca.conexoes = conexoesControl.value;
+    }
+    const companhiasControl = this.obterControle<number[]>('companhias');
+    if(companhiasControl.value){
+      dadosBusca.companhiasId = companhiasControl.value
+    }
+    const precoMinControl = this.obterControle<number>('precoMin')
+    if(precoMinControl.value){
+      dadosBusca.precoMin = precoMinControl.value
+    }
+    const precoMaxControl = this.obterControle<number>('precoMin')
+    if(precoMaxControl.value){
+      dadosBusca.precoMax = precoMaxControl.value
     }
     return dadosBusca
   }
