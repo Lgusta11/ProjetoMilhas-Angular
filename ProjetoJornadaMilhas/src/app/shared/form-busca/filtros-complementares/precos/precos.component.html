@@ -11,7 +11,7 @@
     </div>
   </div>
   <mat-slider [min]="passagemService.precoMin" [max]="passagemService.precoMax">
-    <input id="preco-minimo" matSliderStartThumb>
-    <input id="preco-maximo" matSliderEndThumb>
+    <input id="preco-minimo" matSliderStartThumb [formControl]="precoMin">
+    <input id="preco-maximo" matSliderEndThumb [formControl]="precoMax">
   </mat-slider>
 </section>
